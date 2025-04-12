@@ -77,6 +77,8 @@ public class OfflineRecorder extends Thread {
     public void process() {
         double[]out=fftnative_short(Constants.temp,Constants.temp.length);
 
+        System.out.println(out.length);
+
         List<Entry> lineData=new ArrayList<>();
         float freqSpacing = (float)fs/out.length;
         for(int i = 0; i < out.length; i++) {
@@ -92,9 +94,9 @@ public class OfflineRecorder extends Thread {
         int width=2000;
         Constants.lineChart.getXAxis().setAxisMinimum(0);//Math.max(freq-width,0));
         Constants.lineChart.getXAxis().setAxisMaximum(24000); //Math.min(freq+width,24000));
-        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-        System.out.println(Math.max(freq-width,0));
-        System.out.println(Math.min(freq+width,24000));
+        //System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        //System.out.println(Math.max(freq-width,0));
+        //System.out.println(Math.min(freq+width,24000));
         Constants.lineChart.getAxisLeft().setAxisMinimum(0);
         Constants.lineChart.getAxisLeft().setAxisMaximum(160);
 

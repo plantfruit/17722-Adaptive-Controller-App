@@ -218,7 +218,7 @@ public class MainActivity extends AppCompatActivity  implements SensorEventListe
                 Constants.accz.add(z);
 //                graphData(new float[]{x,y,z});
                 gotacc=true;
-                Log.e("asdf",x+","+y+","+z);
+                //Log.e("asdf",x+","+y+","+z);
             }
         }
     }
