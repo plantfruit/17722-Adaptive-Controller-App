@@ -77,13 +77,26 @@ public class OfflineRecorder extends Thread {
     public void process() {
         double[]out=fftnative_short(Constants.temp,Constants.temp.length);
 
-        System.out.println(out.length);
+        int windowLen = 150;
+        int arraySampling = 7;
+        float[] windowedFFT = new float[windowLen];
+        int[] fftWindowIndices = new int[] {320, 1370}; // 1344
+        int counter = 0;
 
         List<Entry> lineData=new ArrayList<>();
         float freqSpacing = (float)fs/out.length;
+        int target = 1000;
         for(int i = 0; i < out.length; i++) {
             lineData.add(new Entry(i*freqSpacing, (float) out[i]));
+
+            if (i >= fftWindowIndices[0] && i <= fftWindowIndices[1] && i % arraySampling == 0) {
+                windowedFFT[counter] = (float) out[i];
+                counter++;
+            }
         }
+
+        System.out.println(windowedFFT[0]);
+
         LineDataSet data1 = new LineDataSet(lineData, "");
         data1.setDrawCircles(false);
         data1.setColor(context.getResources().getColor(R.color.red));
