@@ -83,6 +83,7 @@ public class OfflineRecorder extends Thread {
         int[] fftWindowIndices = new int[] {320, 1370}; // 1344
         int counter = 0;
 
+        // Window FFT to custom frequency range and reduce it to a smaller-sized array for ML input
         List<Entry> lineData=new ArrayList<>();
         float freqSpacing = (float)fs/out.length;
         int target = 1000;
@@ -91,12 +92,19 @@ public class OfflineRecorder extends Thread {
 
             if (i >= fftWindowIndices[0] && i <= fftWindowIndices[1] && i % arraySampling == 0) {
                 windowedFFT[counter] = (float) out[i];
-
                 lineData.add(new Entry(i*freqSpacing, (float) out[i]));
-
                 counter++;
             }
         }
+
+        // Smooth FFT
+        windowedFFT = smooth(windowedFFT, 2);
+
+        // Replace graph data with smoothed values
+        for (int i = 0; i < windowedFFT.length; i++) {
+            lineData.get(i).setY(windowedFFT[i]);
+        }
+
 
         LineDataSet data1 = new LineDataSet(lineData, "");
         data1.setDrawCircles(false);
@@ -126,6 +134,30 @@ public class OfflineRecorder extends Thread {
         rec.release();
         recording = false;
         FileOperations.writeToDisk(context,filename);
+    }
+
+    // Moving average filter, used to smooth out the data
+    public float[] smooth(float[] data, int windowSize) {
+        float[] smoothed = new float[data.length];
+        int halfWindow = windowSize / 2;
+
+        for (int i = 0; i < data.length; i++) {
+            float sum = 0;
+            int count = 0;
+
+            int start = Math.max(0, i - halfWindow);
+            int end = Math.min(data.length - 1, i + halfWindow - 1);
+
+            for (int j = start; j <= end; j++) {
+                sum += data[j];
+                count++;
+            }
+
+            System.out.println(count);
+            smoothed[i] = sum / count;
+        }
+
+        return smoothed;
     }
 
     public static native double[] fftnative_short(short[] data, int N);
