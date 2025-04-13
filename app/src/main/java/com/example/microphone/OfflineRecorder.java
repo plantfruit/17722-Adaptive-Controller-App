@@ -87,15 +87,16 @@ public class OfflineRecorder extends Thread {
         float freqSpacing = (float)fs/out.length;
         int target = 1000;
         for(int i = 0; i < out.length; i++) {
-            lineData.add(new Entry(i*freqSpacing, (float) out[i]));
+            //lineData.add(new Entry(i*freqSpacing, (float) out[i]));
 
             if (i >= fftWindowIndices[0] && i <= fftWindowIndices[1] && i % arraySampling == 0) {
                 windowedFFT[counter] = (float) out[i];
+
+                lineData.add(new Entry(i*freqSpacing, (float) out[i]));
+
                 counter++;
             }
         }
-
-        System.out.println(windowedFFT[0]);
 
         LineDataSet data1 = new LineDataSet(lineData, "");
         data1.setDrawCircles(false);
