@@ -36,7 +36,7 @@ public class OfflineRecorder extends Thread {
         this.freq = freq;
 
         onnxML = new OnnxPredictor();
-        onnxML.init("models/svm_model.onnx");
+        onnxML.init(context, "svm_model.onnx");
 
         minbuffersize = AudioRecord.getMinBufferSize(
                 fs,
@@ -109,7 +109,7 @@ public class OfflineRecorder extends Thread {
             lineData.get(i).setY(windowedFFT[i]);
         }
 
-        float[] prediction = onnxML.predict(windowedFFT);
+        long[] prediction = onnxML.predict(windowedFFT);
         System.out.println(prediction[0]);
 
         LineDataSet data1 = new LineDataSet(lineData, "");
