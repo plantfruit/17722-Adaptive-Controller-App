@@ -81,20 +81,25 @@ public class OfflineRecorder extends Thread {
     public void process() {
         double[]out=fftnative_short(Constants.temp,Constants.temp.length);
 
-        int windowLen = 150;
-        int arraySampling = 7;
+        int windowLen = 152; // 150;
+        int arraySampling = 10;
         float[] windowedFFT = new float[windowLen];
-        int[] fftWindowIndices = new int[] {320, 1370}; // 1344
+        int[] fftWindowIndices = new int[] {81, 1601}; //{320, 1370}; // 1344
         int counter = 0;
 
         // Window FFT to custom frequency range and reduce it to a smaller-sized array for ML input
         List<Entry> lineData=new ArrayList<>();
         float freqSpacing = (float)fs/out.length;
         int target = 1000;
+        int j = 0;
         for(int i = 0; i < out.length; i++) {
             //lineData.add(new Entry(i*freqSpacing, (float) out[i]));
 
-            if (i >= fftWindowIndices[0] && i <= fftWindowIndices[1] && i % arraySampling == 0) {
+            if (i > fftWindowIndices[0]) {
+                j++;
+            }
+
+            if (i >= fftWindowIndices[0] && i<= fftWindowIndices[1] && j > 0 && j % arraySampling == 0) {
                 windowedFFT[counter] = (float) out[i];
                 lineData.add(new Entry(i*freqSpacing, (float) out[i]));
                 counter++;
@@ -102,13 +107,14 @@ public class OfflineRecorder extends Thread {
         }
 
         // Smooth FFT
-        windowedFFT = smooth(windowedFFT, 2);
+        //windowedFFT = smooth(windowedFFT, 2);
 
         // Replace graph data with smoothed values
-        for (int i = 0; i < windowedFFT.length; i++) {
-            lineData.get(i).setY(windowedFFT[i]);
-        }
+//        for (int i = 0; i < windowedFFT.length; i++) {
+//            lineData.get(i).setY(windowedFFT[i]);
+//        }
 
+        // ML classification
         long[] prediction = onnxML.predict(windowedFFT);
         System.out.println(prediction[0]);
 
