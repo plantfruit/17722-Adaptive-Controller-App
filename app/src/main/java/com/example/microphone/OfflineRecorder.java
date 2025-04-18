@@ -65,16 +65,16 @@ public class OfflineRecorder extends Thread {
             process();
 
 //            Log.e("asdf","counter "+count+","+Constants.samples.length+","+minbuffersize);
-            for (int i = 0; i < bytesread; i++) {
-                if (count >= Constants.samples.length) {
-                    recording = false;
-                    FileOperations.writeToDisk(context,filename);
-                    break;
-                } else {
-                    Constants.samples[count] = Constants.temp[i];
-                    count += 1;
-                }
-            }
+//            for (int i = 0; i < bytesread; i++) {
+//                if (count >= Constants.samples.length) {
+//                    recording = false;
+//                    FileOperations.writeToDisk(context,filename);
+//                    break;
+//                } else {
+//                    Constants.samples[count] = Constants.temp[i];
+//                    count += 1;
+//                }
+//            }
         }
     }
 
@@ -117,6 +117,7 @@ public class OfflineRecorder extends Thread {
         // ML classification
         long[] prediction = onnxML.predict(windowedFFT);
         System.out.println(prediction[0]);
+        Constants.directionLabel.setText(Long.toString(prediction[0]));
 
         LineDataSet data1 = new LineDataSet(lineData, "");
         data1.setDrawCircles(false);
@@ -145,7 +146,7 @@ public class OfflineRecorder extends Thread {
         }
         rec.release();
         recording = false;
-        FileOperations.writeToDisk(context,filename);
+        //FileOperations.writeToDisk(context,filename);
     }
 
     // Moving average filter, used to smooth out the data

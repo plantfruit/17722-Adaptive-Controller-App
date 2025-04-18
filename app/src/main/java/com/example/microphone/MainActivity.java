@@ -76,6 +76,7 @@ public class MainActivity extends AppCompatActivity  implements SensorEventListe
         Constants.lineChart = (LineChart)findViewById(R.id.linechart);
         Constants.startButton = (Button)findViewById(R.id.button);
         Constants.stopButton = (Button)findViewById(R.id.button2);
+        Constants.directionLabel = (TextView)findViewById(R.id.directionLabel);
         Constants.startButton.setEnabled(true);
         Constants.stopButton.setEnabled(false);
         Constants.startButton.setOnClickListener(new View.OnClickListener() {
@@ -115,7 +116,7 @@ public class MainActivity extends AppCompatActivity  implements SensorEventListe
                 Constants.startButton.setEnabled(true);
                 Constants.stopButton.setEnabled(false);
                 Constants.start=false;
-                FileOperations.writetofile(av,Constants.fname);
+                //FileOperations.writetofile(av,Constants.fname);
             }
         });
 

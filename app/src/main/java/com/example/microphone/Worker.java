@@ -41,7 +41,9 @@ public class Worker  extends AsyncTask<Void, Void, Void> {
 
         Log.e("asdf","start");
         try {
-            Thread.sleep(length*1000);
+            while(Constants.start) {
+                Thread.sleep(length * 1000);
+            }
         }
         catch(Exception e){
             Log.e("asdf","Asdf");
