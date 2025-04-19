@@ -36,7 +36,7 @@ public class OfflineRecorder extends Thread {
         this.freq = freq;
 
         onnxML = new OnnxPredictor();
-        onnxML.init(context, "svm_model.onnx");
+        onnxML.init(context, "svm_model_576.onnx");
 
         minbuffersize = AudioRecord.getMinBufferSize(
                 fs,
@@ -81,10 +81,13 @@ public class OfflineRecorder extends Thread {
     public void process() {
         double[]out=fftnative_short(Constants.temp,Constants.temp.length);
 
-        int windowLen = 152; // 150;
+        int windowLen = 576;
+        //152; // 150;
         int arraySampling = 10;
         float[] windowedFFT = new float[windowLen];
-        int[] fftWindowIndices = new int[] {81, 1601}; //{320, 1370}; // 1344
+        int[] fftWindowIndices = new int[] {448, 1024};
+        //{81, 1601};
+        //{320, 1370}; // 1344
         int counter = 0;
 
         // Window FFT to custom frequency range and reduce it to a smaller-sized array for ML input
@@ -99,7 +102,8 @@ public class OfflineRecorder extends Thread {
                 j++;
             }
 
-            if (i >= fftWindowIndices[0] && i<= fftWindowIndices[1] && j > 0 && j % arraySampling == 0) {
+            if (i >= fftWindowIndices[0] && i<= fftWindowIndices[1] && j > 0)// && j % arraySampling == 0)
+            {
                 windowedFFT[counter] = (float) out[i];
                 lineData.add(new Entry(i*freqSpacing, (float) out[i]));
                 counter++;
@@ -107,7 +111,7 @@ public class OfflineRecorder extends Thread {
         }
 
         // Smooth FFT
-        //windowedFFT = smooth(windowedFFT, 2);
+        windowedFFT = smooth(windowedFFT, 12);
 
         // Replace graph data with smoothed values
 //        for (int i = 0; i < windowedFFT.length; i++) {
