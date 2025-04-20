@@ -36,7 +36,7 @@ public class OfflineRecorder extends Thread {
         this.freq = freq;
 
         onnxML = new OnnxPredictor();
-        onnxML.init(context, "svm_model_576.onnx");
+        onnxML.init(context, "svm_model_asymm.onnx");
 
         minbuffersize = AudioRecord.getMinBufferSize(
                 fs,
