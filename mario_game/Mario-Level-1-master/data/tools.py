@@ -2,6 +2,7 @@ __author__ = 'justinarmstrong'
 
 import os
 import pygame as pg
+from adaptive_ui.key_binding_script import prompt_user_for_keybinding
 
 keybinding = {
     'action':pg.K_s,
@@ -10,6 +11,8 @@ keybinding = {
     'right':pg.K_RIGHT,
     'down':pg.K_DOWN
 }
+
+controller_keybinding = prompt_user_for_keybinding()
 
 class Control(object):
     """Control class for entire project. Contains the game loop, and contains
@@ -27,7 +30,16 @@ class Control(object):
         self.state_dict = {}
         self.state_name = None
         self.state = None
+        self.controller_state = None
+        self.controller_button_pressed = None
+    #emulate keyboard presses when controller is pressed
+    def start_fake_event(self):
+        if self.controller_state == 'PRESSED':
+            pg.event.post(pg.event.Event(pg.KEYDOWN, key=keybinding[controller_keybinding[self.controller_button_pressed]]))
+        else:
+            pg.event.post(pg.event.Event(pg.KEYUP, key=keybinding[controller_keybinding[self.controller_button_pressed]]))
 
+    #setting up which screen is there
     def setup_states(self, state_dict, start_state):
         self.state_dict = state_dict
         self.state_name = start_state
@@ -51,6 +63,7 @@ class Control(object):
 
     def event_loop(self):
         for event in pg.event.get():
+            self.start_fake_event()
             if event.type == pg.QUIT:
                 self.done = True
             elif event.type == pg.KEYDOWN:

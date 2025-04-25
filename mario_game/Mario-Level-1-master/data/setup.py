@@ -14,6 +14,10 @@ ORIGINAL_CAPTION = c.ORIGINAL_CAPTION
 
 os.environ['SDL_VIDEO_CENTERED'] = '1'
 pg.init()
+pg.joystick.init()
+
+
+# Post the event to the queue
 pg.event.set_allowed([pg.KEYDOWN, pg.KEYUP, pg.QUIT])
 pg.display.set_caption(c.ORIGINAL_CAPTION)
 SCREEN = pg.display.set_mode(c.SCREEN_SIZE)
