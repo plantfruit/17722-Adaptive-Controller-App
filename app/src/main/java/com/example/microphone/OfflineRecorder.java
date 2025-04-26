@@ -29,11 +29,14 @@ public class OfflineRecorder extends Thread {
     int freq;
     OnnxPredictor onnxML;
 
-    public OfflineRecorder(int microphone, int fs, int bufferLen, Context context, String filename, int freq) {
+    ServerConnector serverConnector;
+
+    public OfflineRecorder(int microphone, int fs, int bufferLen, Context context, String filename, int freq, ServerConnector serverConnector) {
         this.context = context;
         this.filename = filename;
         this.fs = fs;
         this.freq = freq;
+        this.serverConnector = serverConnector;
 
         onnxML = new OnnxPredictor();
         onnxML.init(context, "svm_model_asymm.onnx");
@@ -60,6 +63,7 @@ public class OfflineRecorder extends Thread {
         rec.startRecording();
         recording=true;
         while(recording) {
+            serverConnector.sendMessage();
             bytesread = rec.read(Constants.temp, 0, minbuffersize);
 
             process();
@@ -120,7 +124,7 @@ public class OfflineRecorder extends Thread {
 
         // ML classification
         long[] prediction = onnxML.predict(windowedFFT);
-        System.out.println(prediction[0]);
+        //System.out.println(prediction[0]);
         Constants.directionLabel.setText(Long.toString(prediction[0]));
 
         LineDataSet data1 = new LineDataSet(lineData, "");
@@ -170,7 +174,7 @@ public class OfflineRecorder extends Thread {
                 count++;
             }
 
-            System.out.println(count);
+            //System.out.println(count);
             smoothed[i] = sum / count;
         }
 

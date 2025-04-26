@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity  implements SensorEventListe
                 serverConnector.connectToServer();
 
                 closeKeyboard();
-                task = new Worker(av,freq,vol,length, 48000,Constants.fname);
+                task = new Worker(av,freq,vol,length, 48000,Constants.fname, serverConnector);
                 task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                 Constants.startButton.setEnabled(false);
                 Constants.stopButton.setEnabled(true);
@@ -134,27 +134,27 @@ public class MainActivity extends AppCompatActivity  implements SensorEventListe
         Context c= this;
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(c);
         freq=prefs.getInt("freq",200);
-        Constants.freqEt.setText(freq+"");
-        Constants.freqEt.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-            @Override
-            public void beforeTextChanged(CharSequence s, int start,
-                                          int count, int after) {
-            }
-            @Override
-            public void onTextChanged(CharSequence cs, int start,
-                                      int before, int count) {
-                SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(c).edit();
-                String s = Constants.freqEt.getText().toString();
-                if (Utils.isInteger(s)) {
-                    freq=Integer.parseInt(s);
-                    editor.putInt("freq", freq);
-                    editor.commit();
-                }
-            }
-        });
+        //Constants.freqEt.setText(freq+"");
+//        Constants.freqEt.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//            }
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start,
+//                                          int count, int after) {
+//            }
+//            @Override
+//            public void onTextChanged(CharSequence cs, int start,
+//                                      int before, int count) {
+//                SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(c).edit();
+//                String s = Constants.freqEt.getText().toString();
+//                if (Utils.isInteger(s)) {
+//                    freq=Integer.parseInt(s);
+//                    editor.putInt("freq", freq);
+//                    editor.commit();
+//                }
+//            }
+//        });
         vol=prefs.getFloat("vol", 0.1f);
         String volText = vol+"";
         Constants.volEt.setText(volText.substring(0,3));

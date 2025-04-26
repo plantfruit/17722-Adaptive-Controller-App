@@ -12,14 +12,16 @@ public class Worker  extends AsyncTask<Void, Void, Void> {
     int fs;
     int length;
     String fname;
+    ServerConnector serverConnector;
 
-    public Worker(Context context, int freq, double vol, int length, int fs, String fname) {
+    public Worker(Context context, int freq, double vol, int length, int fs, String fname, ServerConnector serverConnector) {
         this.freq = freq;
         this.vol=vol;
         this.length = length;
         this.context = context;
         this.fs = fs;
         this.fname = fname;
+        this.serverConnector = serverConnector;
     }
 
     @Override
@@ -33,7 +35,7 @@ public class Worker  extends AsyncTask<Void, Void, Void> {
     protected Void doInBackground(Void... voids) {
         short[] tone = Tone.generateTone(freq,1,fs);
 
-        OfflineRecorder rec = new OfflineRecorder(MediaRecorder.AudioSource.DEFAULT,fs,fs*length, context, fname, freq);
+        OfflineRecorder rec = new OfflineRecorder(MediaRecorder.AudioSource.DEFAULT,fs,fs*length, context, fname, freq, serverConnector);
         rec.start();
 
         // AudioSpeaker speaker = new AudioSpeaker(context, tone, fs);
