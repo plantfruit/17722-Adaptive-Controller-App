@@ -80,6 +80,7 @@ public class OfflineRecorder extends Thread {
 //                }
 //            }
         }
+
     }
 
     public void process() {
@@ -154,6 +155,7 @@ public class OfflineRecorder extends Thread {
         }
         rec.release();
         recording = false;
+        serverConnector.sendMessage("7");
         //FileOperations.writeToDisk(context,filename);
     }
 

@@ -40,6 +40,7 @@ public class ServerConnector {
     }
 
     public void sendMessage() {
+        
         if (writer != null) {
             writer.println(Constants.directionLabel.getText());
         }
