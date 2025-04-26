@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class Constants {
     static Button startButton, stopButton;
-    static EditText freqEt,volEt,lengthEt;
+    static EditText freqEt,volEt,lengthEt, ipEt;
     static TextView directionLabel;
     static LineChart lineChart;
     static short[] samples;

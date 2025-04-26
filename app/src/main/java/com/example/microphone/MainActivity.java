@@ -58,10 +58,14 @@ public class MainActivity extends AppCompatActivity  implements SensorEventListe
     List<Entry> lineDataZ;
     int counter=0;
 
+    ServerConnector serverConnector;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        serverConnector = new ServerConnector();
 
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.RECORD_AUDIO},1);
         onRequestPermissionsResult(1,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.RECORD_AUDIO},grantResults);
@@ -89,6 +93,8 @@ public class MainActivity extends AppCompatActivity  implements SensorEventListe
                         tv.setText(Constants.fname);
                     }
                 });
+
+                serverConnector.connectToServer();
 
                 closeKeyboard();
                 task = new Worker(av,freq,vol,length, 48000,Constants.fname);
@@ -120,9 +126,10 @@ public class MainActivity extends AppCompatActivity  implements SensorEventListe
             }
         });
 
-        Constants.freqEt = (EditText)findViewById(R.id.editTextNumber);
+        //Constants.freqEt = (EditText)findViewById(R.id.editTextNumber);
         Constants.volEt = (EditText)findViewById(R.id.editTextNumber2);
         Constants.lengthEt = (EditText)findViewById(R.id.editTextNumber3);
+        Constants.ipEt = (EditText)findViewById((R.id.editTextIp));
 
         Context c= this;
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(c);
@@ -272,6 +279,12 @@ public class MainActivity extends AppCompatActivity  implements SensorEventListe
     protected void onPause() {
         super.onPause();
         sensorManager.unregisterListener(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        serverConnector.onDestroy();
     }
 
 }
