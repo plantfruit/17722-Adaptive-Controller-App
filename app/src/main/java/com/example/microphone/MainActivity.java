@@ -127,8 +127,8 @@ public class MainActivity extends AppCompatActivity  implements SensorEventListe
         });
 
         //Constants.freqEt = (EditText)findViewById(R.id.editTextNumber);
-        Constants.volEt = (EditText)findViewById(R.id.editTextNumber2);
-        Constants.lengthEt = (EditText)findViewById(R.id.editTextNumber3);
+        //Constants.volEt = (EditText)findViewById(R.id.editTextNumber2);
+        //Constants.lengthEt = (EditText)findViewById(R.id.editTextNumber3);
         Constants.ipEt = (EditText)findViewById((R.id.editTextIp));
 
         Context c= this;
@@ -155,51 +155,51 @@ public class MainActivity extends AppCompatActivity  implements SensorEventListe
 //                }
 //            }
 //        });
-        vol=prefs.getFloat("vol", 0.1f);
-        String volText = vol+"";
-        Constants.volEt.setText(volText.substring(0,3));
-        Constants.volEt.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-            @Override
-            public void beforeTextChanged(CharSequence s, int start,
-                                          int count, int after) {
-            }
-            @Override
-            public void onTextChanged(CharSequence cs, int start,
-                                      int before, int count) {
-                SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(c).edit();
-                String s = Constants.volEt.getText().toString();
-                if (Utils.isDouble(s)) {
-                    vol=Double.parseDouble(s);
-                    editor.putFloat("vol", (float)vol);
-                    editor.commit();
-                }
-            }
-        });
-        length=prefs.getInt("length",30);
-        Constants.lengthEt.setText(length+"");
-        Constants.lengthEt.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-            @Override
-            public void beforeTextChanged(CharSequence s, int start,
-                                          int count, int after) {
-            }
-            @Override
-            public void onTextChanged(CharSequence cs, int start,
-                                      int before, int count) {
-                SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(c).edit();
-                String s = Constants.lengthEt.getText().toString();
-                if (Utils.isInteger(s)) {
-                    length=Integer.parseInt(s);
-                    editor.putInt("length", length);
-                    editor.commit();
-                }
-            }
-        });
+//        vol=prefs.getFloat("vol", 0.1f);
+//        String volText = vol+"";
+//        Constants.volEt.setText(volText.substring(0,3));
+//        Constants.volEt.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//            }
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start,
+//                                          int count, int after) {
+//            }
+//            @Override
+//            public void onTextChanged(CharSequence cs, int start,
+//                                      int before, int count) {
+//                SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(c).edit();
+//                String s = Constants.volEt.getText().toString();
+//                if (Utils.isDouble(s)) {
+//                    vol=Double.parseDouble(s);
+//                    editor.putFloat("vol", (float)vol);
+//                    editor.commit();
+//                }
+//            }
+//        });
+//        length=prefs.getInt("length",30);
+//        Constants.lengthEt.setText(length+"");
+//        Constants.lengthEt.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//            }
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start,
+//                                          int count, int after) {
+//            }
+//            @Override
+//            public void onTextChanged(CharSequence cs, int start,
+//                                      int before, int count) {
+//                SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(c).edit();
+//                String s = Constants.lengthEt.getText().toString();
+//                if (Utils.isInteger(s)) {
+//                    length=Integer.parseInt(s);
+//                    editor.putInt("length", length);
+//                    editor.commit();
+//                }
+//            }
+//        });
 
     }
 
@@ -283,8 +283,8 @@ public class MainActivity extends AppCompatActivity  implements SensorEventListe
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         serverConnector.onDestroy();
+        super.onDestroy();
     }
 
 }
