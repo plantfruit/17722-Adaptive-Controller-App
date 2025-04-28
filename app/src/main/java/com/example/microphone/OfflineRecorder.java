@@ -28,6 +28,7 @@ public class OfflineRecorder extends Thread {
     int fs;
     int freq;
     OnnxPredictor onnxML;
+    OnnxRegressor onnxR;
 
     ServerConnector serverConnector;
 
@@ -39,7 +40,9 @@ public class OfflineRecorder extends Thread {
         this.serverConnector = serverConnector;
 
         onnxML = new OnnxPredictor();
-        onnxML.init(context, "svm_model_asymm.onnx");
+        onnxML.init(context, "svm_model_d9.onnx");
+        onnxR = new OnnxRegressor();
+        onnxR.init(context, "press_no_press_model.onnx", "y_axis_model.onnx");
 
         minbuffersize = AudioRecord.getMinBufferSize(
                 fs,
@@ -124,9 +127,23 @@ public class OfflineRecorder extends Thread {
 //        }
 
         // ML classification
-        long[] prediction = onnxML.predict(windowedFFT);
-        //System.out.println(prediction[0]);
-        Constants.directionLabel.setText(Long.toString(prediction[0]));
+        if (Constants.classifierOrRegressor) {
+            long[] prediction = onnxML.predict(windowedFFT);
+            //System.out.println(prediction[0]);
+            Constants.directionLabel.setText(Long.toString(prediction[0]));
+        }
+        else {
+            String pressState = onnxR.classifierPredict(windowedFFT);
+
+            if (pressState.equals("unpressed")) {
+                Constants.directionLabel.setText(pressState);
+            }
+            else {
+                float rPrediction = onnxR.regressorPredict(windowedFFT);
+                Constants.directionLabel.setText(Float.toString(rPrediction));
+            }
+
+        }
 
         LineDataSet data1 = new LineDataSet(lineData, "");
         data1.setDrawCircles(false);

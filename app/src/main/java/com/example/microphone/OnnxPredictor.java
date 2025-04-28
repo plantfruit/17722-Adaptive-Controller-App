@@ -52,7 +52,6 @@ public class OnnxPredictor {
     // Run inference on a float array input
     public long[] predict(float[] inputData) {
         try {
-            // Wrap your 1D array in a 2D array: shape [1][150]
             float[][] input2D = new float[1][inputData.length];
             System.arraycopy(inputData, 0, input2D[0], 0, inputData.length);
 

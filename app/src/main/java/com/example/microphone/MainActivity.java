@@ -20,6 +20,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -95,6 +96,9 @@ public class MainActivity extends AppCompatActivity  implements SensorEventListe
                 });
 
                 serverConnector.connectToServer();
+
+                CheckBox classRegCheck = (CheckBox)findViewById(R.id.classifierOrRegressorCheck);
+                Constants.classifierOrRegressor = classRegCheck.isChecked();
 
                 closeKeyboard();
                 task = new Worker(av,freq,vol,length, 48000,Constants.fname, serverConnector);

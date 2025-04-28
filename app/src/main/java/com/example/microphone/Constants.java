@@ -22,5 +22,6 @@ public class Constants {
     static ArrayList<Float> gravy;
     static ArrayList<Float> gravz;
     static boolean start=false;
+    static boolean classifierOrRegressor=true;
     static String fname="";
 }
