@@ -40,7 +40,8 @@ public class OfflineRecorder extends Thread {
         this.serverConnector = serverConnector;
 
         onnxML = new OnnxPredictor();
-        onnxML.init(context, "svm_model_d9.onnx");
+        onnxML.init(context, "depth_model.onnx");
+        //onnxML.init(context, "svm_model_d9.onnx");
         onnxR = new OnnxRegressor();
         onnxR.init(context, "press_no_press_model.onnx", "y_axis_model.onnx");
 

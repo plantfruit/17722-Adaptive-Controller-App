@@ -1,5 +1,7 @@
 package com.example.microphone;
 
+import android.util.Log;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -21,6 +23,7 @@ public class ServerConnector {
 
         socketThread = new Thread(() -> {
             try {
+                Log.d("ServerConnector", "Trying to connect");
                 socket = new Socket(SERVER_IP, SERVER_PORT);
                 writer = new PrintWriter(socket.getOutputStream(), true);
 
