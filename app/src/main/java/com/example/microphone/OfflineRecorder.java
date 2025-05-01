@@ -44,7 +44,7 @@ public class OfflineRecorder extends Thread {
         String modelName = "";
         switch (Constants.modelSelection) {
             case "Directional Classifier":
-                modelName = "svm_model_asymm.onnx";
+                modelName = "svm_model_d9.onnx";
                 classifierOrRegressor = true;
                 break;
             case "Pressure Classifier":
