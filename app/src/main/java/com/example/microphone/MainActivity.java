@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity  implements SensorEventListe
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long arg3) {
-                Constants.modelSelection = (String) adapter.getItem(position);
+                Constants.modelSelection = adapter.getItem(position).toString();
             }
 
             @Override
