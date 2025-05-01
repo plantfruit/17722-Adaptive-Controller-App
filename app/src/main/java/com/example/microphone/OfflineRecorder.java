@@ -29,6 +29,7 @@ public class OfflineRecorder extends Thread {
     int freq;
     OnnxPredictor onnxML;
     OnnxRegressor onnxR;
+    boolean classifierOrRegressor; // True - Classifier. False - Regressor
 
     ServerConnector serverConnector;
 
@@ -40,10 +41,32 @@ public class OfflineRecorder extends Thread {
         this.serverConnector = serverConnector;
 
         onnxML = new OnnxPredictor();
-        onnxML.init(context, "depth_model.onnx");
-        //onnxML.init(context, "svm_model_d9.onnx");
-        onnxR = new OnnxRegressor();
-        onnxR.init(context, "press_no_press_model.onnx", "y_axis_model.onnx");
+        String modelName = "";
+        switch (Constants.modelSelection) {
+            case "Directional Classifier":
+                modelName = "svm_model_asymm.onnx";
+                classifierOrRegressor = true;
+                break;
+            case "Pressure Classifier":
+                modelName = "depth_model.onnx";
+                classifierOrRegressor = true;
+                break;
+            case "Regressor":
+                modelName = "y_axis_model.onnx";
+                classifierOrRegressor = false;
+                break;
+            default:
+        }
+
+        if (classifierOrRegressor) {
+            onnxML.init(context, modelName);
+        }
+        else {
+            onnxR = new OnnxRegressor();
+            onnxR.init(context, "press_no_press_model.onnx", "y_axis_model.onnx");
+        }
+        Log.d("ONNX", "Loaded model: " + modelName);
+
 
         minbuffersize = AudioRecord.getMinBufferSize(
                 fs,
@@ -128,7 +151,7 @@ public class OfflineRecorder extends Thread {
 //        }
 
         // ML classification
-        if (Constants.classifierOrRegressor) {
+        if (classifierOrRegressor) {
             long[] prediction = onnxML.predict(windowedFFT);
             //System.out.println(prediction[0]);
             Constants.directionLabel.setText(Long.toString(prediction[0]));

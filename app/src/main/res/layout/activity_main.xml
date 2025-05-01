@@ -91,9 +91,20 @@
         android:id="@+id/classifierOrRegressorCheck"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="68dp"
-        android:layout_marginTop="176dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="332dp"
+        android:enabled="false"
         android:text="Classifier (check) or Regressor (blank)"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Spinner
+        android:id="@+id/modeldropdown"
+        android:layout_width="265dp"
+        android:layout_height="23dp"
+        android:layout_marginStart="68dp"
+        android:layout_marginTop="188dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

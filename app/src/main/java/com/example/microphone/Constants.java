@@ -2,6 +2,7 @@ package com.example.microphone;
 
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.LineChart;
@@ -24,4 +25,5 @@ public class Constants {
     static boolean start=false;
     static boolean classifierOrRegressor=true;
     static String fname="";
+    static String modelSelection = "";
 }

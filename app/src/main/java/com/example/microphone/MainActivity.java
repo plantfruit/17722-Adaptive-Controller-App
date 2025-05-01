@@ -19,9 +19,12 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.LineChart;
@@ -60,6 +63,7 @@ public class MainActivity extends AppCompatActivity  implements SensorEventListe
     int counter=0;
 
     ServerConnector serverConnector;
+    ArrayAdapter<CharSequence> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +81,32 @@ public class MainActivity extends AppCompatActivity  implements SensorEventListe
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_FASTEST);
+
+        // From AndroidStudio documentation
+        // https://developer.android.com/develop/ui/views/components/spinner#java
+        // Attach dropdown array information to the dropdown spinner created in UI view
+        Spinner spinner = (Spinner) findViewById(R.id.modeldropdown);
+        // Create an ArrayAdapter using the string array and a default spinner layout.
+        adapter = ArrayAdapter.createFromResource(
+                this,
+                R.array.models_choices,
+                android.R.layout.simple_spinner_item
+        );
+        // Specify the layout to use when the list of choices appears.
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner.
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long arg3) {
+                Constants.modelSelection = (String) adapter.getItem(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+
+            }
+        });
 
         Constants.lineChart = (LineChart)findViewById(R.id.linechart);
         Constants.startButton = (Button)findViewById(R.id.button);
@@ -116,6 +146,7 @@ public class MainActivity extends AppCompatActivity  implements SensorEventListe
                 lineDataY=new ArrayList<>();
                 lineDataZ=new ArrayList<>();
                 counter=0;
+
                 Constants.start=true;
             }
         });
@@ -138,6 +169,9 @@ public class MainActivity extends AppCompatActivity  implements SensorEventListe
         Context c= this;
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(c);
         freq=prefs.getInt("freq",200);
+
+
+
         //Constants.freqEt.setText(freq+"");
 //        Constants.freqEt.addTextChangedListener(new TextWatcher() {
 //            @Override

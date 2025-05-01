@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">AdaptiveController</string>
+
+    <string-array name="models_choices">
+        <item>Directional Classifier</item>
+        <item>Pressure Classifier</item>
+        <item>Regressor</item>
+    </string-array>
 </resources>
